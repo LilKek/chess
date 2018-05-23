@@ -1,18 +1,28 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include <stdio.h>
+#include <stdlib.h>
 
+typedef struct {
+    char type;
+    int colour;
+}board;
 
-void Ini_cells(unsigned short int i1,unsigned short int j1);
+void initial_board(board *a);
 
-char checknum(unsigned short int num_figure);
+void print_board(board *a);
 
-void board_(unsigned short int i1,unsigned short int j1);
+int coordinates(char i, int j, char i1, int j1);
 
-char code_to_letter(unsigned short int i1, unsigned short int j1);
+int *convert(char j, int i, char j1, int i1);
 
-void print_board();
+void move(board *a, char i, int j, char i1, int j1);
 
-unsigned short int table_1(char a);
+int colour_checking(board * a, int str, int stl, int colour);
 
-unsigned short int table_2(char b);
+int win_checking(board * a);
 
-char move_to(unsigned short int figure);
+int move_checking(board * a, int i, int j, int i1, int j1);
+
+#endif
