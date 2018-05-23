@@ -1,34 +1,29 @@
-CC = gcc
-FLAG = -Wall -Werror
+all: bin/src bin/test
 
-all:bin/chsv
+bin/src: build/main.o build/board.o build/board_print_plain.o
+	gcc -Wall -std=c99 -Werror build/main.o build/board.o build/board_print_plain.o -o bin/src
 
-test:bin/chsv_test
+build/main.o: src/main.c
+	gcc -Wall -std=c99 -Werror -c src/main.c -o build/main.o
 
+build/board.o: src/board.c
+	gcc -Wall -std=c99 -Werror -c src/board.c -o build/board.o
 
-bin/chsv_test: build/test/main.o build/board.o
-	$(CC) $(FLAG) build/test/main.o build/board.o -o bin/chsv_test
+build/board_print_plain.o: src/board_print_plain.c
+	gcc -Wall -std=c99 -Werror -c src/board_print_plain.c -o build/board_print_plain.o
 
+bin/test: build/test.o build/board.o build/board_print_plain.o build/ctest.o
+	gcc -Wall -std=c99 build/test.o build/board.o build/board_print_plain.o build/ctest.o -o bin/test
 
+build/test.o: test/test.c
+	gcc -Wall -std=c99 -c test/test.c -o build/test.o -Ithirdparty -Isrc
 
-build/test/main.o:test/main.c
-	$(CC) $(FLAG) -I src -I thirdparty -c test/main.c -o build/test/main.o
+build/ctest.o: test/ctest.c
+	gcc -Wall -std=c99 -c test/ctest.c -o build/ctest.o -Ithirdparty
 
-
-
-bin/chsv: build/main.o build/board.o
-	$(CC) $(FLAG) -o bin/chsv build/main.o build/board.o
-	
-build/main.o:src/main.c
-	$(CC) $(FLAG) -c -o build/main.o src/main.c
-	
-build/board.o:src/board.c
-	$(CC) $(FLAG) -c -o build/board.o src/board.c
-	
-dir:
-	mkdir build
-	mkdir bin
+test: bin/test
+	bin/test
 	
 .PHONY: clean
 clean:
-rm -rf build/*.o
+	rm -rf build/*.o
