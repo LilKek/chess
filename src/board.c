@@ -1,466 +1,312 @@
 #include <stdio.h>
 #include "board.h"
 
-extern unsigned short int board[8][8];
+int coordinates(char i, int j, char i1, int j1) {
+    int g = 0;
+    char mass[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 
+    for (int k = 0; k <= 7; k++) {
+        if (i == mass[k]) {
+            g++;
+        }
+        if (i1 == mass[k]) {
+            g++;
+        }
+        if (j == k + 1) {
+            g++;
+        }
+        if (j1 == k + 1) {
+            g++;
+        }
+    }
 
-
-char checknum(unsigned short int num_figure)
-{
-	switch(num_figure){
-		case 21:
-			return 'r';
-		case 22:
-			return 'n';
-		case 23:
-			return 'b';
-		case 24:
-			return 'q';
-		case 25:
-			return 'k';
-		case 20:
-			return 'p';
-		case 10:
-			return 'P';
-		case 11:
-			return 'R';
-		case 12:
-			return 'N';
-		case 13:
-			return 'B';
-		case 14:
-			return 'Q';
-		case 15:
-			return 'K';
-		default:
-			return '!';
-	}
+    if (g != 4) {
+        printf("Data entry error\n");
+        return -1;
+    }
+    return 0;
 }
 
-
-char code_to_letter(unsigned short int i1, unsigned short int j1)
-{
-	char empty = '!';
-	if ((i1 + j1)%2 != 0) {
-		empty = '#';
-	} else {
-		empty = ' ';
-	}
-	
-	switch(board[i1][j1]){
-		case 21:
-			return 'r';
-		case 22:
-			return 'n';
-		case 23:
-			return 'b';
-		case 24:
-			return 'q';
-		case 25:
-			return 'k';
-		case 20:
-			return 'p';
-		case 10:
-			return 'P';
-		case 11:
-			return 'R';
-		case 12:
-			return 'N';
-		case 13:
-			return 'B';
-		case 14:
-			return 'Q';
-		case 15:
-			return 'K';
-		case 0:
-			return empty;
-		default:
-			return '!';
-	}
+int *convert(char i, int j, char i1, int j1) {
+    int index_i, index_i1;
+    static int index[4];
+    char mass[8] = {'A','B','C','D','E','F','G','H'};
+    for (int k = 0; k <= 7; k++) {
+	if (i == mass[k]) {
+	    index_i = k;
+        }
+	if (i1 == mass[k]) {
+	    index_i1 = k;
+        }
+    }
+    index[0] = index_i;
+    index[1] = j - 1;
+    index[2] = index_i1;
+    index[3] = j1 - 1;
+    return index;
 }
 
+void move(board *a, char i, int j, char i1, int j1){
+    board tmp;
 
-void Ini_cells(unsigned short int i1,unsigned short int j1)
-{
-	FILE *log;
-	unsigned short int num_figure;
-	unsigned short int num_figure2;
-	char move1[3];
-	char move2[3];
-	unsigned short int i2, j2;
-	num_figure = board[i1][j1];
-	printf("%d\n", num_figure);
-	if (num_figure == 21) {
-		printf("Введите координату,куда хотите переместить ладью: \n");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-
-	}
-		if (num_figure == 22) {
-		printf("Введите координату,куда хотите переместить коня: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-		if (num_figure == 23) {
-		printf("Введите координату,куда хотите переместить слона: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 24) {
-		printf("Введите координату,куда хотите переместить ферзя: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 25) {
-		printf("Введите координату,куда хотите переместить короля: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 20) {
-		printf("Введите координату,куда хотите переместить пешку: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 11) {
-		printf("Введите координату,куда хотите переместить ладью: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 12) {
-		printf("Введите координату,куда хотите переместить коня: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 13) {
-		printf("Введите координату,куда хотите переместить слона: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-		
-	}	if (num_figure == 14) {
-		printf("Введите координату,куда хотите переместить ферзя: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 15) {
-		printf("Введите координату,куда хотите переместить короля: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}
-	
-		if (num_figure == 10) {
-		printf("Введите координату,куда хотите переместить пешку: ");
-		scanf("%s", &move1[0]);
-		while ((move1[0] < 'a') || (move1[0] > 'h')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move1[0]);
-		}
-		scanf("%s", &move2[0]);
-		while ((move2[0] < '1') || (move2[0] > '8')) {
-			printf("Ошибка ввода,повторите попытку\n");
-			scanf("%s", &move2[0]);
-		}
-		i2 = table_1(move1[0]);
-		j2 = table_2(move2[0]);
-		num_figure2 = board[j2][i2];
-		board[j2][i2] = num_figure;
-		board[i1][j1] = 0;
-		log = fopen("./logs/user.log", "a+");
-		fprintf(log, "%c%c%c\n", move_to(num_figure2), move1[0], move2[0]);
-		fclose(log);
-	}	
-
-	
+    if (a[j1*8 + i1].type == '_') {
+    tmp = a[j * 8 + i];
+    a[j * 8 + i] = a[j1 * 8 + i1];
+    a[j1 * 8 + i1] = tmp;
+    }
+    else {
+        a[j1*8 + i1] = a[j*8 + i];
+            a[j*8 + i].type = '_';
+            a[j*8 + i].colour = 2;
+    }
 }
 
-
-void board_(unsigned short int i1,unsigned short int j1)
-{
-
-
-	printf("------------\n");
-	Ini_cells(i1, j1);//Для перемещения фигуры	
-	
-
-	
+int colour_checking(board *a, int str, int stl, int colour){
+	if (a[str * 8 + stl].colour == colour) {
+	    return 1;
+        }
+	return 0;
 }
 
-
-
-void print_board()
-{
-
-	printf("\n\n");
-	printf("    *  | A | B | C | D | E | F | G | H |  *    \n");
-	printf("    _   ___ ___ ___ ___ ___ ___ ___ ___   _    \n");
-	printf("    8  | %c |#%c#| %c |#%c#| %c |#%c#| %c |#%c#|  8    \n", 
-	code_to_letter(0,0), code_to_letter(0,1),code_to_letter(0,2),code_to_letter(0,3),code_to_letter(0,4),code_to_letter(0,5),code_to_letter(0,6),code_to_letter(0,7));
-	printf("    _  |___|###|___|###|___|###|___|###|  _    \n");
-	printf("    7  |#%c#| %c |#%c#| %c |#%c#| %c |#%c#| %c |  7    \n",
-	code_to_letter(1,0), code_to_letter(1,1),code_to_letter(1,2),code_to_letter(1,3),code_to_letter(1,4),code_to_letter(1,5),code_to_letter(1,6),code_to_letter(1,7));
-	printf("    _  |###|___|###|___|###|___|###|___|  _    \n");
-	printf("    6  | %c |#%c#| %c |#%c#| %c |#%c#| %c |#%c#|  6    \n",
-	code_to_letter(2,0), code_to_letter(2,1),code_to_letter(2,2),code_to_letter(2,3),code_to_letter(2,4),code_to_letter(2,5),code_to_letter(2,6),code_to_letter(2,7));
-	printf("    _  |___|###|___|###|___|###|___|###|  _    \n");
-	printf("    5  |#%c#| %c |#%c#| %c |#%c#| %c |#%c#| %c |  5    \n",
-	code_to_letter(3,0), code_to_letter(3,1),code_to_letter(3,2),code_to_letter(3,3),code_to_letter(3,4),code_to_letter(3,5),code_to_letter(3,6),code_to_letter(3,7));
-	printf("    _  |###|___|###|___|###|___|###|___|  _    \n");
-	printf("    4  | %c |#%c#| %c |#%c#| %c |#%c#| %c |#%c#|  4    \n",
-	code_to_letter(4,0), code_to_letter(4,1),code_to_letter(4,2),code_to_letter(4,3),code_to_letter(4,4),code_to_letter(4,5),code_to_letter(4,6),code_to_letter(4,7));
-	printf("    _  |___|###|___|###|___|###|___|###|  _    \n");
-	printf("    3  |#%c#| %c |#%c#| %c |#%c#| %c |#%c#| %c |  3    \n",
-	code_to_letter(5,0), code_to_letter(5,1),code_to_letter(5,2),code_to_letter(5,3),code_to_letter(5,4),code_to_letter(5,5),code_to_letter(5,6),code_to_letter(5,7));
-	printf("    _  |###|___|###|___|###|___|###|___|  _    \n");
-	printf("    2  | %c |#%c#| %c |#%c#| %c |#%c#| %c |#%c#|  2    \n",
-	code_to_letter(6,0), code_to_letter(6,1),code_to_letter(6,2),code_to_letter(6,3),code_to_letter(6,4),code_to_letter(6,5),code_to_letter(6,6),code_to_letter(6,7));
-	printf("    _  |___|###|___|###|___|###|___|###|  _    \n");
-	printf("    1  |#%c#| %c |#%c#| %c |#%c#| %c |#%c#| %c |  1    \n",
-	code_to_letter(7,0), code_to_letter(7,1),code_to_letter(7,2),code_to_letter(7,3),code_to_letter(7,4),code_to_letter(7,5),code_to_letter(7,6),code_to_letter(7,7));
-	printf("    _  |###|___|###|___|###|___|###|___|  _    \n");
-	printf("                                               \n");
-	printf("    *  | A | B | C | D | E | F | G | H |  *    \n");
-	printf("\n\n");
-	
+int win_checking(board * a){
+    int flag = 0;
+    for (int i = 0; i <= 7; i++) {
+        for (int j = 0; j <=7; j++) {
+            if ((a[i * 8 + j].type == 'k') || (a[i * 8 + j].type == 'K')) {
+                flag++;
+            }
+        }
+    }
+    if(flag == 2) {
+        return 0;
+    }
+    return 1;
 }
 
-unsigned short int table_1(char a)//Преобразование символа в число
-{
-		switch(a){
-		case 'a':
-			return 0;
-		case 'b':
-			return 1;
-		case 'c':
-			return 2;
-		case 'd':
-			return 3;
-		case 'e':
-			return 4;
-		case 'f':
-			return 5;
-		case 'g':
-			return 6;
-		case 'h':
-			return 7;
-		default:
-			return -1;
-		}
-}
-	
-	
-	
-	
-unsigned short int table_2(char b)//Преобразование символа в число
-{	
-		switch(b){
-		case '1':
-			return 7;
-		case '2':
-			return 6;
-		case '3':
-			return 5;
-		case '4':
-			return 4;
-		case '5':
-			return 3;
-		case '6':
-			return 2;
-		case '7':
-			return 1;
-		case '8':
-			return 0;
-		default:
-			return -1;
-		}
-}
+int move_checking(board * a, int j, int i, int j1, int i1){   
+    if (a[j * 8 + i].colour == a[j1 * 8 + i1].colour) {
+        return 0;
+    }
+    if ((a[j * 8 + i].type == 'p') || (a[j * 8 + i].type == 'P')) {
+        if(((a[j * 8 + i].colour == 1) && (a[j1 * 8 + i1].colour == 0)) || ((a[j * 8 + i].colour == 0) && (a[j1 * 8 + i1].colour == 1))) { 
+            if (((i + 1) == i1) && ((j - 1) == j1)) {
+                return 1;
+            }
+            if (((i + 1) == i1) && ((j + 1) == j1)) {
+                return 1;
+            }
+            if (((i - 1) == i1) && ((j - 1) == j1)) {
+                return 1;
+            }
+            if (((i - 1) == i1) && ((j + 1) == j1)) {
+                return 1;
+            }
+        }
+        if (a[j1 * 8 + i1].colour == 2) {
+            if ((j == 1) && (j1 < 4) && (j1 > 1) && (i == i1) && (a[(j + 1) * 8 + i].colour == 2)) {
+                return 1;
+            }
+            if ((j == 6) && (j1 > 3) && (j1 < 6) && (i == i1) && (a[(j - 1) * 8 + i].colour == 2)) {
+                return 1;
+            }
+            if ((a[j * 8 + i].type == 'p') && (j != 6) && (j1 == (j - 1)) && (i == i1)) { 
+                return 1;
+            }
+            if ((a[j * 8 + i].type == 'P') && (j != 1) && (j1 == (j + 1)) && (i == i1)) {
+                return 1;
+            }
+        }
+    }
 
-char move_to(unsigned short int figure)
-{
-	if (figure == 0) {
-		return '-';
-	} else {
-		return 'x';
-	}
+    if ((a[j * 8 + i].type == 'r') || (a[j * 8 + i].type == 'R')) {        
+        if ((i == i1) && (j < j1)) { 
+            for (int k = j + 1; k < j1; k++) {
+                if (a[k * 8 + j].colour != 2) {
+                    return 0;
+                }
+            return 1;
+            }
+        }
+        if ((i == i1) && (j > j1)) { 
+            for (int k = j1 + 1; k < j; k++) {
+                if (a[k * 8 + i].colour != 2) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        if ((i < i1) && (j == j1)) {
+            for (int k = i + 1; k < i1; k++) {
+                if (a[j * 8 + k].colour != 2) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        if ((i > i1) && (j == j1)) {
+            for (int k = i1 + 1; k < i; k++) {
+                if (a[j * 8 + k].colour != 2) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+    }
+
+    if ((a[j * 8 + i].type == 'h') || (a[j * 8 + i].type == 'H')) {
+        if (((j1 == (j + 1)) || (j1 == (j - 1))) && (i1 == (i + 2) || (i1 == (i - 2)))) {
+            return 1;
+        
+        }
+        if (((j1 == (j + 2)) || (j1 == (j - 2))) && ((i1 == (i + 1)) || (i1 == (i - 1)))) {
+            return 1;
+        }
+    }
+
+    if ((a[j * 8 + i].type == 'q') || (a[j * 8 + i].type == 'Q')) {
+        if ((i == i1) && (j < j1)) { 
+            for (int k = j + 1; k < j1; k++) {
+                if (a[k * 8 + i].colour != 2) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        if ((1 == i1) && (j > j1)) { 
+            for (int k = j1 + 1; k < j; k++) {
+                if (a[k * 8 + i].colour != 2) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        if ((i < i1) && (j == j1)) {
+            for (int k = i + 1; k < i1; k++) {
+                if (a[j * 8 + k].colour != 2) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        if ((i > i1) && (j == j1)) {
+            for (int k = i1 + 1; k < i; k++) {
+                if (a[j * 8 + k].colour != 2) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        if ((j- j1) == (i - i1)) {
+            int k = j - 1;
+            int g = i - 1;
+            while ((k > j1) && (g > i1)) {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k--;
+                g--;
+            }
+            return 1;
+        }    
+        if ((j - j1) == (i1 - i)) {
+            int k = j - 1;
+            int g = i + 1;
+            while ((k > j1) && (g < i1)) {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k--;
+                g++;
+            }
+            return 1;
+        }          
+        if ((j1 - j) == (i - i1)) {
+            int k = j + 1;
+            int g = j - 1;
+            while ((k < j1) && (g > i1)) {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k++;
+                g--;
+            }
+            return 1;
+        }  
+        if ((j1 - j) == (i1 - i)) {
+            int k = j + 1;
+            int g = i + 1;
+            while ((k < j1) && (g < i1)) {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k++;
+                g++;
+            }
+            return 1;
+        }  
+    }
+
+    if ((a[j * 8 + i].type == 'b') || (a[j * 8 + i].type == 'B')) {
+        if ((j - j1) == (i - i1)) {
+            int k = j - 1;
+            int g = i - 1;
+            while ((k > j1) && (g > i1))
+            {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k--;
+                g--;
+            }
+            return 1;
+        }    
+        if ((j - j1) == (i1 - i)) {
+            int k = j - 1;
+            int g = i + 1;
+            while ((k > j1) && (g < i1)) {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k--;
+                g++;
+            }
+            return 1;
+        }          
+        if ((j1 - j) == (i - i1)) {
+            int k = j + 1;
+            int g = i - 1;
+            while ((k < j1) && (g > i1)) {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k++;
+                g--;
+            }
+            return 1;
+        }  
+        if ((j1 - j) == (i1 - i)) {
+            int k = j + 1;
+            int g = i + 1;
+            while ((k < j1) && (g < i1)) {
+                if (a[k * 8 + g].colour != 2) {
+                    return 0;
+                }
+                k++;
+                g++;
+            }
+            return 1;
+        }  
+   }
+
+    if ((a[j * 8 + i].type == 'k') || (a[j * 8 + i].type == 'K')) {
+        if ((((j1 - j) == 1) || ((j - j1) == 1)) && (i1 == i))
+            return 1;
+        if ((j == j1) && (((i - i1) == 1) || (i1 - i) == 1))
+            return 1;
+        if ((j1 - j == 1) && (((i1 - i) == 1) || ((i - i1) == 1)))
+            return 1;
+        if ((j - j1 == 1) && (((i1 - i) == 1) || ((i - i1) == 1)))
+            return 1;
+    }
+    return 0;
 }
