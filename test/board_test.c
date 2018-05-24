@@ -2,25 +2,7 @@
 #include <ctest.h>
 #include <stdlib.h>
 
-CTEST(move_suite, coordinates) // Проверка ввода данных
-{
-    //GIVEN
-    board *a = (board *)malloc(sizeof(board)*8*8);
-        initial_board(a);
-
-    //WHEN	
-	int check = coordinates('E', 2, 'E', 4);
-    int check1 = coordinates('e', 2, 'e', 3);
-    
-    //THEN
-    const int expected = 0;
-    const int expected1 = -1;
-
-    ASSERT_EQUAL(expected, check);
-    ASSERT_EQUAL(expected1, check1);
-}
-
-CTEST(move_suite, treason) // Проверка на возможность атаки на свои же фигуры
+CTEST(move_suite, betrayal) // Проверка на возможность атаки на свои же фигуры
 {
     //GIVEN
     board *a = (board *)malloc(sizeof(board) * 8 * 8);
@@ -36,7 +18,7 @@ CTEST(move_suite, treason) // Проверка на возможность ат�
     ASSERT_EQUAL(expected, check);
 }
 
-CTEST(move_suite, pawn) // Ход пешки 
+CTEST(move_suite, move_pawn) // Ход пешки 
 {	
     //GIVEN
     board *a = (board *)malloc(sizeof(board) * 8 * 8);
@@ -70,7 +52,7 @@ CTEST(move_suite, pawn) // Ход пешки
     ASSERT_EQUAL(expected4, check4);
 }
 
-CTEST(move_suite, rook) // Ход слона
+CTEST(move_suite, move_rook) // Ход слона
 {
     //GIVEN
     board *a = (board *)malloc(sizeof(board)*8*8);
@@ -105,7 +87,7 @@ CTEST(move_suite, rook) // Ход слона
     ASSERT_EQUAL(expected5, check5);
     ASSERT_EQUAL(expected6, check6);
 }
-CTEST(move_suite, hourse) // Ход коня
+CTEST(move_suite, move_hourse) // Ход коня
 {
     //GIVEN
     board *a = (board *)malloc(sizeof(board)*8*8);
@@ -136,7 +118,7 @@ CTEST(move_suite, hourse) // Ход коня
     ASSERT_EQUAL(expected4, check4);
     ASSERT_EQUAL(expected5, check5);
 }
-CTEST(move_suite, el) // Ход слон
+CTEST(move_suite, move_el) // Ход слон
 {
     //GIVEN
     board *a = (board *)malloc(sizeof(board)*8*8);
@@ -166,7 +148,7 @@ CTEST(move_suite, el) // Ход слон
     ASSERT_EQUAL(expected4, check4);
     ASSERT_EQUAL(expected5, check5);
 }
-CTEST(move_suite, queen) // Ход ферзя
+CTEST(move_suite, move_queen) // Ход ферзя
 {
     //GIVEN
     board *a = (board *)malloc(sizeof(board) * 8 * 8);
@@ -198,7 +180,7 @@ CTEST(move_suite, queen) // Ход ферзя
     ASSERT_EQUAL(expected4, check4);
     ASSERT_EQUAL(expected5, check5);
 }
-CTEST(move_suite, king) // Ход король
+CTEST(move_suite, move_king) // Ход король
 {
     //GIVEN
     board *a = (board *)malloc(sizeof(board)*8*8);

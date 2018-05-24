@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 typedef struct {
-    char type;
+   	char type;
     int colour;
 }board;
 

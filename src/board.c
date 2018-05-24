@@ -21,7 +21,7 @@ int coordinates(char i, int j, char i1, int j1) {
     }
 
     if (g != 4) {
-        printf("Data entry error\n");
+        printf("Ошибка ввода данных\n");
         return -1;
     }
     return 0;
@@ -32,11 +32,11 @@ int *convert(char i, int j, char i1, int j1) {
     static int index[4];
     char mass[8] = {'A','B','C','D','E','F','G','H'};
     for (int k = 0; k <= 7; k++) {
-	if (i == mass[k]) {
-	    index_i = k;
+    if (i == mass[k]) {
+        index_i = k;
         }
-	if (i1 == mass[k]) {
-	    index_i1 = k;
+    if (i1 == mass[k]) {
+        index_i1 = k;
         }
     }
     index[0] = index_i;
@@ -62,10 +62,10 @@ void move(board *a, char i, int j, char i1, int j1){
 }
 
 int colour_checking(board *a, int str, int stl, int colour){
-	if (a[str * 8 + stl].colour == colour) {
-	    return 1;
+    if (a[str * 8 + stl].colour == colour) {
+        return 1;
         }
-	return 0;
+    return 0;
 }
 
 int win_checking(board * a){
