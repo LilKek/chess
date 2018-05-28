@@ -1,1 +1,2 @@
-[![Build Status](https://travis-ci.org/LilKek/chess.svg?branch=master)
+#chess
+[![Build Status](https://travis-ci.org/LilKek/chess.svg?branch=master)]
